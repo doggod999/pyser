@@ -15,6 +15,7 @@ logfile = logpath + os.sep + get_log_filename()
 
 #服务器的端口
 PORT = 8888
+HOST = ''
 
 if __name__ == '__main__':
     print 'workpath:', workpath
