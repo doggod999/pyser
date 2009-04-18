@@ -13,7 +13,11 @@ apppath = workpath + os.sep + 'webapps'
 logpath = workpath + os.sep + 'logs'
 logfile = logpath + os.sep + get_log_filename()
 
+#服务器的端口
+PORT = 8888
+
 if __name__ == '__main__':
-    print 'workpath: ', workpath
-    print 'app path: ', apppath
-    print 'logfile: ', logfile
+    print 'workpath:', workpath
+    print 'app path:', apppath
+    print 'logfile:', logfile
+    print 'port:', PORT
