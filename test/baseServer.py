@@ -10,6 +10,24 @@ print 'Listening at port %s' % PORT
 s.listen(5)
 
 while True:
-    connect, address = s.accept()
-    print connect.getpeername()
-    connect.close()
+    try:
+        connect, address = s.accept()
+    except KeyboardInterrupt:
+        raise
+    except:
+        traceback.print_exc()
+        continue
+    
+    try:
+        print connect.getpeername()
+    except (KeyboardInterrupt, SystemExit):
+        raise
+    except:
+        traceback.print_exc()
+        
+    try:
+        connect.close()
+    except KeyboardInterrupt:
+        raise
+    except:
+        traceback.print_exc()
