@@ -8,6 +8,7 @@ import datetime
 import config
 
 class Log():
+    """ 系统日志 """
     def __init__(self):
         if not os.path.exists(config.logpath):
             os.makedirs(config.logpath)
