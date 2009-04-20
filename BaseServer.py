@@ -3,14 +3,17 @@
 #Create time: 2009-04-19
 
 import config
+import Log
 
 class BaseServer():
     def __init__(self):
         self.host = config.HOST
         self.port = config.PORT
+        self.logger = Log.Log()
         
 
 if __name__ == '__main__':
     bs = BaseServer()
     print bs.host
     print bs.port
+    bs.logger.info('from baseserver\n')
