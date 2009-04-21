@@ -17,6 +17,7 @@ class Log():
     def write(self, msg):
         self.file.writelines(msg)
         self.file.flush()
+        print msg
         
     def info(self, msg):
         msg = self.get_time() + ' -- INFO -- ' + msg
