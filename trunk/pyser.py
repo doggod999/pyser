@@ -2,12 +2,7 @@
 #Author: ooaixt
 #Create time: 2009-04-16
 
-import os
-import datetime
-import config
-
-print config.workpath
-
+from BaseServer import BaseServer
 
 if __name__ == '__main__':
-    pass
+    BaseServer()
