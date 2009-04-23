@@ -20,13 +20,18 @@ class HttpRequest():
             self.request_dict['entity_body'] = request_list[-1]
             print self.request_dict['entity_body']
             self.parse_entity_body()
-        
+        if self.request_dict['method'] == 'GET':
+            temp_list = self.request_dict['url'].split('?')
+            if len(temp_list) == 2:
+                self.request_dict['url'] = temp_list[0]
+                self.request_dict['entity_body'] = temp_list[1]
+                self.parse_entity_body()
         
         print self.request_dict['request_line']
         print self.request_dict['method']
         print self.request_dict['url']
         print self.request_dict['version']
-        
+        print self.request_dict['request']
         
     def parse_request_line(self):
         '''分析http请求行'''
@@ -38,5 +43,6 @@ class HttpRequest():
         self.request_dict['version'] = line_list[2]
         
     def parse_entity_body(self):
-        entity_body = self.request_dict['entity_body']
-        
+        '''分析POST方法的请求实体'''
+        pass
+#        entity_body = self.request_dict['entity_body']
