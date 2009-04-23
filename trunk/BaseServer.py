@@ -6,6 +6,7 @@ import socket
 
 import config
 import log
+import HttpRequest
 
 class BaseServer():
     def __init__(self):
@@ -22,6 +23,13 @@ class BaseServer():
         connect, client_addr = self.socket.accept()
         client_host = client_addr[0]
         print socket.getfqdn(client_host)
+        
+        request = connect.recv(1024)
+        self.http_request = HttpRequest.HttpRequest(request)
+        
+#        qq = buf.split('\r\n')
+#        print qq
+#        print buf
         
         connect.send('welcome')
         self.doGET()

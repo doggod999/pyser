@@ -2,11 +2,15 @@
 #Author: ooaixt
 #Create time: 2009-04-18
 
-import os
+import os, sys
 import datetime
 
-import config
-
+try:
+    import config
+except ImportError:
+    print 'Can\'t find config file!'
+    sys.exit(0)
+    
 class Log():
     """ 系统日志 """
     def __init__(self):
