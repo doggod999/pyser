@@ -11,6 +11,9 @@ import HttpRequest
 class BaseServer():
     def __init__(self):
         self.logger = log.Log()
+        self.run_server()
+        
+    def run_server(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((config.HOST, config.PORT))
@@ -21,15 +24,16 @@ class BaseServer():
         
     def handle_request(self):
         connect, client_addr = self.socket.accept()
-        client_host = client_addr[0]
-        print socket.getfqdn(client_host)
+        client_ip = client_addr[0]
+        client_name = socket.getfqdn(client_ip)
+        print client_ip
+        print client_name
         
         request = connect.recv(1024)
         self.http_request = HttpRequest.HttpRequest(request)
         
-#        qq = buf.split('\r\n')
-#        print qq
-#        print buf
+        msg = '[%s] -- %s\n' % (client_name, self.http_request.request_dict['request_line'])
+        self.logger.info(msg)
         
         connect.send('welcome')
         self.doGET()

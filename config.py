@@ -20,5 +20,5 @@ HOST = ''
 if __name__ == '__main__':
     print 'workpath:', workpath
     print 'app path:', apppath
-    print 'logfile:', logfile
+    print 'log file:', logfile
     print 'port:', PORT
