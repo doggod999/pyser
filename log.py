@@ -10,13 +10,16 @@ import config
 class Log():
     """ 系统日志 """
     def __init__(self):
-        if not os.path.exists(config.logpath):
-            os.makedirs(config.logpath)
-        self.file = open(config.logfile, 'ab')
+        self.logpath = config.logpath
+        self.logfile = config.logfile
+        if not os.path.exists(self.logpath):
+            os.makedirs(self.logpath)
     
     def write(self, msg):
+        self.file = open(self.logfile, 'ab')
         self.file.writelines(msg)
         self.file.flush()
+        self.file.close()
         print msg
         
     def info(self, msg):
@@ -34,14 +37,8 @@ class Log():
     def get_time(self):
         return datetime.datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
         
-    def __del__(self):
-        self.file.close()
-        
-        
 if __name__ == '__main__':
     logger = Log()
     logger.info('test111111\n')
     logger.error('test22222222\n')
     logger.warning('test33333333\n')
-    logger.__del__()
-        
