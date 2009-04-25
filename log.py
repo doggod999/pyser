@@ -27,15 +27,15 @@ class Log():
         print msg
         
     def info(self, msg):
-        msg = self.get_time() + ' -- INFO -- ' + msg
+        msg = self.get_time() + ' - - INFO - - ' + msg
         self.write(msg)
         
     def error(self, msg):
-        msg = self.get_time() + ' -- ERROR -- ' + msg
+        msg = self.get_time() + ' - - ERROR - - ' + msg
         self.write(msg)
         
     def warning(self, msg):
-        msg = self.get_time() + ' -- WARNING -- ' + msg
+        msg = self.get_time() + ' - - WARNING - - ' + msg
         self.write(msg)
         
     def get_time(self):
