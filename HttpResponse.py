@@ -95,8 +95,10 @@ class HttpResponse():
     
     #服务器版本
     server_version = 'BaseServer-Python/0.1beta'
+    
     #HTTP协议版本号    
     version = 'HTTP/1.1'
+    
     #响应消息
     #Copy from python2.5 BaseHTTPServer.py
     responses = {
@@ -164,6 +166,8 @@ class HttpResponse():
               'The gateway server did not receive a timely response'),
         505: ('HTTP Version Not Supported', 'Cannot fulfill request.'),
         }
+    
+    #错误页面
     error_message= """\
     <html>
     <head>
