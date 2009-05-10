@@ -11,7 +11,7 @@ class HttpRequest():
         '''分析http请求'''
         
         request = self.request_dict['request']
-#        print request
+        print request
         request = request.replace('\r', '')
         request_list = request.split('\n')
         self.request_dict['request_line'] = request_list[0]

@@ -10,10 +10,10 @@ import HttpRequest, HttpResponse
 
 class BaseServer():
     def __init__(self):
-        self.logger = log.Log()
         self.run_server()
         
     def run_server(self):
+        self.logger = log.Log()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((config.HOST, config.PORT))
