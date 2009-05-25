@@ -13,7 +13,7 @@ apppath = workpath + os.sep + 'webapps'
 logpath = workpath + os.sep + 'logs'
 logfile = logpath + os.sep + get_log_filename()
 
-#服务器的端口
+#服务器的端口与地址
 PORT = 8888
 HOST = ''
 

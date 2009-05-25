@@ -19,6 +19,7 @@ class Log():
         if not os.path.exists(self.logpath):
             os.makedirs(self.logpath)
     
+    #将msg写入log文件并打印到控制台
     def write(self, msg):
         self.file = open(self.logfile, 'ab')
         self.file.writelines(msg)
