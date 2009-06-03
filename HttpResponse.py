@@ -26,6 +26,8 @@ class HttpResponse():
             path = os.path.join(path, word)
         if not os.path.exists(path):
             return None
+        
+        #默认返回index.html
         if os.path.isdir(path):
             path = path + os.sep + 'index.html'
             if not os.path.exists(path):
@@ -55,10 +57,10 @@ class HttpResponse():
              message = self.responses[code][0]
         else:
             message = ''
+            
         self.write_response_line(code, message)
-        
-        print self.date_time_string()
-        print self.server_version
+#        print self.date_time_string()
+#        print self.server_version
         self.write_header('Content-Type', 'text/html')
         self.write_header('Date', self.date_time_string())
         self.write_header('Server', self.server_version)
