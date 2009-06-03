@@ -2,7 +2,7 @@
 #Author: ooaixt
 #Create time: 2009-04-18
 
-import os, sys
+import os, sys, time
 import datetime
 
 try:
@@ -23,6 +23,9 @@ class Log():
     def write(self, msg):
         self.file = open(self.logfile, 'ab')
         self.file.writelines(msg)
+        print 'sleeping...log'
+        time.sleep(5)
+        print 'wake up!!!log\n'
         self.file.flush()
         self.file.close()
         print msg
