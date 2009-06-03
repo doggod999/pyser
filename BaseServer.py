@@ -10,6 +10,8 @@ import config
 import log
 import HttpRequest, HttpResponse
 
+lock = threading.RLock()
+
 class BaseServer():
     def __init__(self):
         self.run_server()
@@ -46,30 +48,41 @@ class BaseServer():
         
         request = connect.recv(4096)
         http_response = HttpResponse.HttpResponse(connect)
-        self.http_request = HttpRequest.HttpRequest(request)
+        http_request = HttpRequest.HttpRequest(request)
         
-        self.log_msg = '[%s] - - "%s"' % (client_name, self.http_request.request_dict['request_line'])
+        log_msg = '[%s] - - "%s"' % (client_name, http_request.request_dict['request_line'])
         
-        if self.http_request.request_dict['method'] == 'GET':
-            self.doGET(http_response)
+        if http_request.request_dict['method'] == 'GET':
+            self.doGET(http_request, http_response, log_msg)
         else:
-            self.http_response.send_error(400, self.http_request.request_dict['method'])
-            self.log_msg += ' 400\r\n'
-            self.logger.info(self.log_msg)
+            http_response.send_error(400, http_request.request_dict['method'])
+            log_msg += ' 400\r\n'
+            
+            lock.acquire()
+            self.logger.info(log_msg)
+            lock.release()
+            
         connect.close()
         
-    def doGET(self, http_response):
-        file = http_response.get_file(self.http_request.request_dict['url'], config.apppath)
+    def doGET(self, http_request, http_response, log_msg):
+        file = http_response.get_file(http_request.request_dict['url'], config.apppath)
         if file is None:
-            http_response.send_error(404, self.http_request.request_dict['url'])
-            self.log_msg += ' 404\r\n'
-            self.logger.info(self.log_msg)
+            http_response.send_error(404, http_request.request_dict['url'])
+            log_msg += ' 404\r\n'
+            
+            lock.acquire()
+            self.logger.info(log_msg)
+            lock.release()
+            
         else:
             f = open(file, 'rb')
             body = f.read()
             http_response.send_response(200, body)
-            self.log_msg += ' 200\r\n'
-            self.logger.info(self.log_msg)
+            log_msg += ' 200\r\n'
+            
+            lock.acquire()
+            self.logger.info(log_msg)
+            lock.release()
             
     def sleepPrint(self):
         print 'sleeping...'
