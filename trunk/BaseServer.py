@@ -63,15 +63,12 @@ class BaseServer():
         connect.close()
         
     def doGET(self, http_request, http_response, log_msg):
-        file = http_response.get_file(http_request.request_dict['url'], config.apppath)
-        if file is None:
+        flag = http_response.response(http_request.request_dict['url'], config.apppath)
+        if flag == False :
             http_response.send_error(404)
             log_msg += ' 404\r\n'
             self.logInfo(log_msg)
         else:
-            f = open(file, 'rb')
-            body = f.read()
-            http_response.send_response(200, body)
             log_msg += ' 200\r\n'
             self.logInfo(log_msg)
             
