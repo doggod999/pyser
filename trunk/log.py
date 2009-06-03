@@ -23,9 +23,12 @@ class Log():
     def write(self, msg):
         self.file = open(self.logfile, 'ab')
         self.file.writelines(msg)
-        print 'sleeping...log'
-        time.sleep(5)
-        print 'wake up!!!log\n'
+        
+#        #多线程测试
+#        print 'sleeping...log'
+#        time.sleep(5)
+#        print 'wake up!!!log\n'
+        
         self.file.flush()
         self.file.close()
         print msg

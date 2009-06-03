@@ -22,3 +22,4 @@ if __name__ == '__main__':
     print 'app path:', apppath
     print 'log file:', logfile
     print 'port:', PORT
+    print 'host:', HOST

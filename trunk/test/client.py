@@ -1,6 +1,6 @@
 import socket
 
-msg = '''GET / HTTP/1.1
+msg = '''GET /dd HTTP/1.1
 Host: localhost:8888
 User-Agent: Mozilla/5.0 (Windows; U; Windows NT 6.0; zh-CN; rv:1.9.0.1) Gecko/2008070208 Firefox/3.0.1
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
