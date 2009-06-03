@@ -34,14 +34,15 @@ class HttpResponse():
                 return None
         return path
 
-    def send_error(self, code, msg=None):
-        if code == 404:
-            explain = "Can't find the resource %s" % msg
-        elif code == 400:
-            explain = "The ('%s') method unsupported" % msg
-        message = self.responses[code][0]
+    def send_error(self, code):
+        if code in self.responses:
+            message, explain = self.responses[code]
+        else:
+            message, explain = self.responses[400]
         body = (self.error_message % {'code': code, 'message': message, 'explain': explain})
         self.send_response(code, body)
+    
+            
     
     def send_and_finish(self, msg):
         self.wfile.write(msg)
@@ -64,7 +65,7 @@ class HttpResponse():
         self.write_header('Content-Type', 'text/html')
         self.write_header('Date', self.date_time_string())
         self.write_header('Server', self.server_version)
-        self.write_header('Connection', 'close')
+        self.write_header('Connection', 'keep-alive')
         self.write_body(body)
         self.finish()
     

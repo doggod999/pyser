@@ -39,8 +39,8 @@ class BaseServer():
         '''处理请求'''
         
         #多线程测试
-        print 'New child thread:', threading.currentThread().getName()
-        self.sleepPrint()
+#        print 'New child thread:', threading.currentThread().getName()
+#        self.sleepPrint()
         
         #得到客户端的ip以及主机名
         client_ip = client_addr[0]
@@ -54,36 +54,47 @@ class BaseServer():
         
         if http_request.request_dict['method'] == 'GET':
             self.doGET(http_request, http_response, log_msg)
+        elif http_request.request_dict['method'] == 'HEAD':
+            self.doHEAD(http_request, http_response, log_msg)
         else:
-            http_response.send_error(400, http_request.request_dict['method'])
+            http_response.send_error(400)
             log_msg += ' 400\r\n'
-            
-            lock.acquire()
-            self.logger.info(log_msg)
-            lock.release()
-            
+            self.logInfo(log_msg)
         connect.close()
         
     def doGET(self, http_request, http_response, log_msg):
         file = http_response.get_file(http_request.request_dict['url'], config.apppath)
         if file is None:
-            http_response.send_error(404, http_request.request_dict['url'])
+            http_response.send_error(404)
             log_msg += ' 404\r\n'
-            
-            lock.acquire()
-            self.logger.info(log_msg)
-            lock.release()
-            
+            self.logInfo(log_msg)
         else:
             f = open(file, 'rb')
             body = f.read()
             http_response.send_response(200, body)
             log_msg += ' 200\r\n'
+            self.logInfo(log_msg)
             
-            lock.acquire()
-            self.logger.info(log_msg)
-            lock.release()
-            
+    def doHEAD(self, http_request, http_response, log_msg):
+        http_response.send_error(400)
+        log_msg += ' 400\r\n'
+        self.logInfo(log_msg)
+        
+    def logInfo(self, log_msg):   
+        lock.acquire()
+        self.logger.info(log_msg)
+        lock.release() 
+        
+    def logWarning(self, log_msg):  
+        lock.acquire()
+        self.logger.warning(log_msg)
+        lock.release() 
+        
+    def logError(self, log_msg):  
+        lock.acquire()
+        self.logger.error(log_msg)
+        lock.release() 
+        
     def sleepPrint(self):
         print 'sleeping...'
         time.sleep(10)
