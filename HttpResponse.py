@@ -3,11 +3,22 @@
 #Create time: 2009-04-24
 
 import os
+import posixpath
 import time
 
 class HttpResponse():
     def __init__(self, connection):
         self.wfile = connection.makefile('wb', 0)
+    
+    def response(self, url, apppath):
+        file = self.get_file(url, apppath)
+        if file is None:
+            return False
+        else:
+            f = open(file, 'rb')
+            body = f.read()
+            self.send_response(200, file, body)
+            return True
     
     def get_file(self, url, apppath):
         '''解析要请求的url，返回请求的文件。
@@ -40,7 +51,7 @@ class HttpResponse():
         else:
             message, explain = self.responses[400]
         body = (self.error_message % {'code': code, 'message': message, 'explain': explain})
-        self.send_response(code, body)
+        self.send_response(code, '.html', body)
     
             
     
@@ -53,7 +64,7 @@ class HttpResponse():
         self.wfile.flush()
         self.wfile.close()
     
-    def send_response(self, code, body=None):
+    def send_response(self, code, path, body=None):
         if code in self.responses:
              message = self.responses[code][0]
         else:
@@ -62,11 +73,12 @@ class HttpResponse():
         self.write_response_line(code, message)
 #        print self.date_time_string()
 #        print self.server_version
-        self.write_header('Content-Type', 'text/html')
+        self.write_header('Content-Type', self.get_type(path))
         self.write_header('Date', self.date_time_string())
         self.write_header('Server', self.server_version)
-        self.write_header('Connection', 'keep-alive')
-        self.write_body(body)
+        self.write_header('Connection', 'close')
+        if body:
+            self.write_body(body)
         self.finish()
     
     def write_response_line(self, code, message):
@@ -95,6 +107,18 @@ class HttpResponse():
                 day, self.monthname[month], year,
                 hh, mm, ss)
         return s
+    
+    def get_type(self, path):
+        """Return the type of a file."""
+
+        base, ext = posixpath.splitext(path)
+        if ext in self.content_type:
+            return self.content_type[ext]
+        ext = ext.lower()
+        if ext in self.content_type:
+            return self.content_type[ext]
+        else:
+            return self.content_type['']
     
     #服务器版本
     server_version = 'BaseServer-Python/0.1beta'
@@ -171,7 +195,7 @@ class HttpResponse():
         }
     
     #错误页面
-    error_message= """\
+    error_message = """\
     <html>
     <head>
     <title>ERROR PAGE</title>
@@ -182,3 +206,31 @@ class HttpResponse():
     </body>
     </html>
     """
+    
+    #Content-Type列表
+    content_type = {
+        ''        : 'application/octet-stream', #default type
+        '.bmp'    : 'image/x-ms-bmp',
+        '.css'    : 'text/css',
+        '.doc'    : 'application/msword',
+        '.exe'    : 'application/octet-stream',
+        '.gif'    : 'image/gif',
+        '.htm'    : 'text/html',
+        '.html'   : 'text/html',
+        '.jpe'    : 'image/jpeg',
+        '.jpeg'   : 'image/jpeg',
+        '.jpg'    : 'image/jpeg',
+        '.js'     : 'application/x-javascript',
+        '.mht'    : 'message/rfc822',
+        '.mhtml'  : 'message/rfc822',
+        '.mp3'    : 'audio/mpeg',
+        '.mpeg'   : 'video/mpeg',
+        '.mpg'    : 'video/mpeg',
+        '.pdf'    : 'application/pdf',
+        '.png'    : 'image/png',
+        '.ppt'    : 'application/vnd.ms-powerpoint',
+        '.swf'    : 'application/x-shockwave-flash',
+        '.tar'    : 'application/x-tar',
+        '.zip'    : 'application/zip',
+        }
+    
