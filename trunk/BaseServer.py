@@ -54,6 +54,8 @@ class BaseServer():
         
         if http_request.request_dict['method'] == 'GET':
             self.doGET(http_request, http_response, log_msg)
+        elif http_request.request_dict['method'] == 'POST':
+            self.doPOST(http_request, http_response, log_msg)
         elif http_request.request_dict['method'] == 'HEAD':
             self.doHEAD(http_request, http_response, log_msg)
         else:
@@ -63,9 +65,17 @@ class BaseServer():
         connect.close()
         
     def doGET(self, http_request, http_response, log_msg):
-        flag = http_response.response(http_request.request_dict['url'], config.apppath)
+        flag = http_response.do_get_response(http_request.request_dict['url'], config.apppath)
         if flag == False :
-            http_response.send_error(404)
+            log_msg += ' 404\r\n'
+            self.logInfo(log_msg)
+        else:
+            log_msg += ' 200\r\n'
+            self.logInfo(log_msg)
+    
+    def doPOST(self, http_request, http_response, log_msg):
+        flag = http_response.do_post_response(http_request.request_dict['url'], config.apppath)
+        if flag == False :
             log_msg += ' 404\r\n'
             self.logInfo(log_msg)
         else:
@@ -73,9 +83,13 @@ class BaseServer():
             self.logInfo(log_msg)
             
     def doHEAD(self, http_request, http_response, log_msg):
-        http_response.send_error(400)
-        log_msg += ' 400\r\n'
-        self.logInfo(log_msg)
+        flag = http_response.do_head_response(http_request.request_dict['url'], config.apppath)
+        if flag == False :
+            log_msg += ' 404\r\n'
+            self.logInfo(log_msg)
+        else:
+            log_msg += ' 200\r\n'
+            self.logInfo(log_msg)
         
     def logInfo(self, log_msg):   
         lock.acquire()
