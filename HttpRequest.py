@@ -27,8 +27,7 @@ class HttpRequest():
                 self.request_dict['url'] = temp_list[0]
                 self.request_dict['entity_body'] = temp_list[1]
                 self.parse_entity_body()
-        pp = self.add_slash(self.request_dict['url'])
-        print pp
+        self.request_dict['url'] = self.add_slash(self.request_dict['url'])
         
     def parse_request_line(self):
         '''分析http请求行'''
@@ -48,15 +47,6 @@ class HttpRequest():
     def add_slash(self, url):
         '''解析要请求的url，末尾自动补全斜杠'''
         
-        words = url.split('/')
-        words = filter(None, words)
-        path = '/'
-        for word in words:
-            drive, word = os.path.splitdrive(word)
-            head, word = os.path.split(word)
-            if word in (os.curdir, os.pardir):
-                continue
-            path = os.path.join(path, word)
-        if os.path.isdir(path):
-            path = path + '/'
-        return path
+        if not url.endswith('/'):
+            url = url + '/'
+        return url

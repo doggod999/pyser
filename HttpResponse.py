@@ -10,14 +10,35 @@ class HttpResponse():
     def __init__(self, connection):
         self.wfile = connection.makefile('wb', 0)
     
-    def response(self, url, apppath):
+    def do_get_response(self, url, apppath):
         file = self.get_file(url, apppath)
         if file is None:
+            self.send_error(404)
             return False
         else:
             f = open(file, 'rb')
             body = f.read()
             self.send_response(200, file, body)
+            return True
+    
+    def do_post_response(self, url, apppath):
+        file = self.get_file(url, apppath)
+        if file is None:
+            self.send_error(404)
+            return False
+        else:
+            f = open(file, 'rb')
+            body = f.read()
+            self.send_response(200, file, body)
+            return True
+    
+    def do_head_response(self, url, apppath):
+        file = self.get_file(url, apppath)
+        if file is None:
+            self.send_error(404)
+            return False
+        else:
+            self.send_response(200, file)
             return True
     
     def get_file(self, url, apppath):
