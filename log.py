@@ -10,12 +10,15 @@ try:
 except ImportError:
     print 'Can\'t find config file!'
     sys.exit(0)
-    
+
+def get_log_filename():
+    return datetime.datetime.now().strftime('Server.%Y-%m-%d.log')
+
 class Log():
     """ 系统日志 """
     def __init__(self):
         self.logpath = config.logpath
-        self.logfile = config.logfile
+        self.logfile = self.logpath + os.sep + get_log_filename()
         if not os.path.exists(self.logpath):
             os.makedirs(self.logpath)
     

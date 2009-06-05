@@ -45,7 +45,7 @@ def changePort():
     
     else:
         config.PORT = new_port
-        msg = '端口修改成功！现在的端口是', new_port
+        msg = '端口修改成功！重启后端口将改为', new_port
         listbox.insert(END, msg)
         listbox.insert(END, '请重启服务器...')
         
@@ -91,9 +91,14 @@ def showInfo():
     listbox.insert(END, '制作小组成员：欧必杰、吴志伟')   
     listbox.insert(END, '鸣谢：115、117') 
     listbox.insert(END, '版本号：1.0 Beta')  
+    
 def clear():
     '''清除文本显示'''
     listbox.delete(0, END)
+    
+def quit():
+    stopServer()
+    root.quit()
 
 root = Tk()   
 root.title("服务器控制台")
@@ -126,7 +131,7 @@ clear_btn = Button(wzwF, text="清除", command=clear)
 clear_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 about_btn = Button(wzwF, text="关于", command=showInfo)
 about_btn.pack(side=LEFT, expand=YES, fill=BOTH)
-quit_btn = Button(wzwF, text="退出", command=root.quit)
+quit_btn = Button(wzwF, text="退出", command=quit)
 quit_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 
 #文本显示框
