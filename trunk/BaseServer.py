@@ -36,6 +36,8 @@ class BaseServer():
         
     def runServer(self):
         self.is_running = True
+        self.host = config.HOST
+        self.port = config.PORT
         self.logger = log.Log()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
