@@ -2,8 +2,6 @@
 #Author: wzw6174
 #Create time: 2009-06-04
 
-
-
 import os
 import config
 import threading
@@ -80,6 +78,7 @@ def startServer():
         listbox.insert(END, '服务器已启动！') 
 
 def stopServer():
+    '''停止服务器'''
     global server_thread 
     if server_thread.isAlive():
         server.stopServer()
@@ -88,16 +87,19 @@ def stopServer():
         listbox.insert(END, '服务器已停止！') 
         
 def showInfo():
+    '''显示帮助'''
     listbox.insert(END, '制作小组成员：欧必杰、吴志伟')   
     listbox.insert(END, '鸣谢：115、117') 
     listbox.insert(END, '版本号：1.0 Beta')  
 def clear():
+    '''清除文本显示'''
     listbox.delete(0, END)
 
 root = Tk()   
 root.title("服务器控制台")
 root.geometry('350x250')
 
+#端口输入框及按钮
 deyF = frame(root, TOP)
 label1 = Label(deyF, text="端口:").pack(side=LEFT, expand=YES, fill=BOTH)
 display = StringVar()
@@ -105,17 +107,18 @@ port_input = Entry(deyF, textvariable=display)
 port_input.pack(side=LEFT, expand=YES, fill=BOTH)
 port_change = Button(deyF, text="Change", command=changePort)
 port_change.pack(side=LEFT, expand=YES, fill=BOTH)
-   
+
+#资源路径输入框及按钮
 opsF = frame(root, TOP)
 label2 = Label(opsF, text="路径:") .pack(side=LEFT, expand=YES, fill=BOTH)
 path_input = Entry(opsF)
 path_input.pack(side=LEFT, expand=YES, fill=BOTH)
 path_change = Button(opsF, text="Change", command=changePath)
 path_change.pack(side=LEFT, expand=YES, fill=BOTH) 
-   
+
+#功能按钮 
 wzwF = frame(root, TOP)
 start_btn = Button(wzwF, text="启动", command=startServer)
-#start_btn.bind("", startServer, is_running)
 start_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 stop_btn = Button(wzwF, text="停止", command=stopServer)
 stop_btn.pack(side=LEFT, expand=YES, fill=BOTH)
@@ -125,7 +128,8 @@ about_btn = Button(wzwF, text="关于", command=showInfo)
 about_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 quit_btn = Button(wzwF, text="退出", command=root.quit)
 quit_btn.pack(side=LEFT, expand=YES, fill=BOTH)
- 
+
+#文本显示框
 clearF = frame(root, BOTTOM)
 scrollbar = Scrollbar(clearF, orient=VERTICAL)
 listbox = Listbox(clearF, yscrollcommand=scrollbar.set)
@@ -133,6 +137,7 @@ scrollbar.configure(command=listbox.yview)
 listbox.pack(side=LEFT, fill=BOTH, expand=1)
 scrollbar.pack(side=RIGHT, fill=Y)
 
+#启动服务器
 startServer()
             
 root.mainloop()
