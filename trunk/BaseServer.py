@@ -19,9 +19,12 @@ class BaseServer():
 #        self.run_server()
     
     def stopServer(self):
+        '''停止服务器'''
         msg = '''HEAD / HTTP/1.1
         Host: localhost:8888
         Connection: close'''
+        if not self.is_running:
+            return
         self.is_running = False
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         if cmp(self.host, ''):
@@ -35,10 +38,10 @@ class BaseServer():
         self.logInfo('Server stop successfully!')
         
     def runServer(self):
+        '''启动服务器'''
         self.is_running = True
         self.host = config.HOST
         self.port = config.PORT
-        self.logger = log.Log()
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.socket.bind((self.host, self.port))
@@ -86,6 +89,7 @@ class BaseServer():
         connect.close()
         
     def doGET(self, http_request, http_response, log_msg):
+        '''响应get方法'''
         flag = http_response.do_get_response(http_request.request_dict['url'], config.apppath)
         if flag == False :
             log_msg += ' 404\r\n'
@@ -95,6 +99,7 @@ class BaseServer():
             self.logInfo(log_msg)
     
     def doPOST(self, http_request, http_response, log_msg):
+        '''响应post方法'''
         flag = http_response.do_post_response(http_request.request_dict['url'], config.apppath)
         if flag == False :
             log_msg += ' 404\r\n'
@@ -104,6 +109,7 @@ class BaseServer():
             self.logInfo(log_msg)
             
     def doHEAD(self, http_request, http_response, log_msg):
+        '''响应head方法'''
         flag = http_response.do_head_response(http_request.request_dict['url'], config.apppath)
         if flag == False :
             log_msg += ' 404\r\n'
@@ -112,19 +118,22 @@ class BaseServer():
             log_msg += ' 200\r\n'
             self.logInfo(log_msg)
         
-    def logInfo(self, log_msg):   
+    def logInfo(self, log_msg):  
+        logger = log.Log() 
         lock.acquire()
-        self.logger.info(log_msg)
+        logger.info(log_msg)
         lock.release() 
         
-    def logWarning(self, log_msg):  
+    def logWarning(self, log_msg): 
+        logger = log.Log() 
         lock.acquire()
-        self.logger.warning(log_msg)
+        logger.warning(log_msg)
         lock.release() 
         
     def logError(self, log_msg):  
+        logger = log.Log()
         lock.acquire()
-        self.logger.error(log_msg)
+        logger.error(log_msg)
         lock.release() 
         
     def sleepPrint(self):
