@@ -76,7 +76,7 @@ class BaseServer():
             http_request = HttpRequest.HttpRequest(request)
         except:
             http_response.sendError(400)
-            log_msg = '[%s] - - bad request' % (client_name)
+            log_msg = '[%s] - - bad request\r\n' % (client_name)
             self.logInfo(log_msg)
             connect.close()
             return
