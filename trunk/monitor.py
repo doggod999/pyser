@@ -6,11 +6,16 @@
 
 import os
 import config
+import threading
 
 from Tkinter import *
 #from FileDialog import *
 
 from BaseServer import BaseServer
+
+is_running = False
+server = BaseServer()
+server_thread = threading.Thread()
 
 def frame(root, side):
     w = Frame(root)
@@ -63,9 +68,25 @@ def changePath():
             listbox.insert(END, '请确认您输入的路径存在！')
        
 def startServer():
-    pass 
+    '''启动服务器'''
+    global server_thread 
+    if not server_thread.isAlive():
+        server_thread = threading.Thread(target=server.runServer)
+        server_thread.setDaemon(1)
+        server_thread.start()
+        listbox.insert(END, '服务器成功启动！') 
+        is_running = True 
+    else:
+        listbox.insert(END, '服务器已启动！') 
+
 def stopServer():
-    pass
+    global server_thread 
+    if server_thread.isAlive():
+        server.stopServer()
+        listbox.insert(END, '服务器成功停止！') 
+    else:
+        listbox.insert(END, '服务器已停止！') 
+        
 def showInfo():
     listbox.insert(END, '制作小组成员：欧必杰、吴志伟')   
     listbox.insert(END, '鸣谢：115、117') 
@@ -94,6 +115,7 @@ path_change.pack(side=LEFT, expand=YES, fill=BOTH)
    
 wzwF = frame(root, TOP)
 start_btn = Button(wzwF, text="启动", command=startServer)
+#start_btn.bind("", startServer, is_running)
 start_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 stop_btn = Button(wzwF, text="停止", command=stopServer)
 stop_btn.pack(side=LEFT, expand=YES, fill=BOTH)
@@ -111,4 +133,6 @@ scrollbar.configure(command=listbox.yview)
 listbox.pack(side=LEFT, fill=BOTH, expand=1)
 scrollbar.pack(side=RIGHT, fill=Y)
 
+startServer()
+            
 root.mainloop()
