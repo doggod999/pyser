@@ -72,7 +72,14 @@ class BaseServer():
         
         request = connect.recv(4096)
         http_response = HttpResponse.HttpResponse(connect)
-        http_request = HttpRequest.HttpRequest(request)
+        try:
+            http_request = HttpRequest.HttpRequest(request)
+        except:
+            http_response.sendError(400)
+            log_msg = '[%s] - - bad request' % (client_name)
+            self.logInfo(log_msg)
+            connect.close()
+            return
         
         log_msg = '[%s] - - "%s"' % (client_name, http_request.request_dict['request_line'])
         
