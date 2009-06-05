@@ -10,38 +10,38 @@ class HttpResponse():
     def __init__(self, connection):
         self.wfile = connection.makefile('wb', 0)
     
-    def do_get_response(self, url, apppath):
-        file = self.get_file(url, apppath)
+    def doGetResponse(self, url, apppath):
+        file = self.getFile(url, apppath)
         if file is None:
-            self.send_error(404)
+            self.sendError(404)
             return False
         else:
             f = open(file, 'rb')
             body = f.read()
-            self.send_response(200, file, body)
+            self.sendResponse(200, file, body)
             return True
     
-    def do_post_response(self, url, apppath):
-        file = self.get_file(url, apppath)
+    def doPostResponse(self, url, apppath):
+        file = self.getFile(url, apppath)
         if file is None:
-            self.send_error(404)
+            self.sendError(404)
             return False
         else:
             f = open(file, 'rb')
             body = f.read()
-            self.send_response(200, file, body)
+            self.sendResponse(200, file, body)
             return True
     
-    def do_head_response(self, url, apppath):
-        file = self.get_file(url, apppath)
+    def doHeadResponse(self, url, apppath):
+        file = self.getFile(url, apppath)
         if file is None:
-            self.send_error(404)
+            self.sendError(404)
             return False
         else:
-            self.send_response(200, file)
+            self.sendResponse(200, file)
             return True
     
-    def get_file(self, url, apppath):
+    def getFile(self, url, apppath):
         '''解析要请求的url，返回请求的文件。
         url为文件夹默认返回index.html。
                     请求的文件不存在则返回None。
@@ -66,17 +66,17 @@ class HttpResponse():
                 return None
         return path
 
-    def send_error(self, code):
+    def sendError(self, code):
         if code in self.responses:
             message, explain = self.responses[code]
         else:
             message, explain = self.responses[400]
         body = (self.error_message % {'code': code, 'message': message, 'explain': explain})
-        self.send_response(code, '.html', body)
+        self.sendResponse(code, '.html', body)
     
             
     
-    def send_and_finish(self, msg):
+    def sendAndFinish(self, msg):
         self.wfile.write(msg)
         self.wfile.flush()
         self.wfile.close()
@@ -85,30 +85,30 @@ class HttpResponse():
         self.wfile.flush()
         self.wfile.close()
     
-    def send_response(self, code, path, body=None):
+    def sendResponse(self, code, path, body=None):
         if code in self.responses:
              message = self.responses[code][0]
         else:
             message = ''
             
-        self.write_response_line(code, message)
+        self.writeResponseLine(code, message)
 #        print self.date_time_string()
 #        print self.server_version
-        self.write_header('Content-Type', self.get_type(path))
-        self.write_header('Date', self.date_time_string())
-        self.write_header('Server', self.server_version)
-        self.write_header('Connection', 'close')
+        self.writeHeader('Content-Type', self.getType(path))
+        self.writeHeader('Date', self.dateTimeString())
+        self.writeHeader('Server', self.server_version)
+        self.writeHeader('Connection', 'close')
         if body:
-            self.write_body(body)
+            self.writeBody(body)
         self.finish()
     
-    def write_response_line(self, code, message):
+    def writeResponseLine(self, code, message):
         self.wfile.write("%s %d %s\r\n" % (self.version, code, message))
         
-    def write_header(self, keyword, value):
+    def writeHeader(self, keyword, value):
         self.wfile.write("%s: %s\r\n" % (keyword, value))
         
-    def write_body(self, body):
+    def writeBody(self, body):
         self.wfile.write("\r\n%s" % body)
     
     
@@ -118,7 +118,7 @@ class HttpResponse():
                  'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
                  'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']    
     
-    def date_time_string(self, timestamp=None):
+    def dateTimeString(self, timestamp=None):
         """Return the current date and time formatted for a message header."""
         if timestamp is None:
             timestamp = time.time()
@@ -129,7 +129,7 @@ class HttpResponse():
                 hh, mm, ss)
         return s
     
-    def get_type(self, path):
+    def getType(self, path):
         """Return the type of a file."""
 
         base, ext = posixpath.splitext(path)

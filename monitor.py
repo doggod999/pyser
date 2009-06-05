@@ -25,7 +25,7 @@ def frame(root, side):
 #    w.pack(side=side, expand=YES, fill=BOTH)
 #    return w
  
-def changePort():
+def change_port():
     '''修改服务器端口'''
     MIN_PORT = 1024
     MAX_PORT = 65535
@@ -49,7 +49,7 @@ def changePort():
         listbox.insert(END, msg)
         listbox.insert(END, '请重启服务器...')
         
-def changePath():
+def change_path():
     '''修改服务器可访问资源的存放目录'''
 #    fd = LoadFileDialog(root)
 #    k = fd.go()
@@ -65,7 +65,7 @@ def changePath():
             listbox.insert(END, '路径不正确！')
             listbox.insert(END, '请确认您输入的路径存在！')
        
-def startServer():
+def start_server():
     '''启动服务器'''
     global server_thread 
     if not server_thread.isAlive():
@@ -77,7 +77,7 @@ def startServer():
     else:
         listbox.insert(END, '服务器已启动！') 
 
-def stopServer():
+def stop_server():
     '''停止服务器'''
     global server_thread 
     if server_thread.isAlive():
@@ -86,7 +86,7 @@ def stopServer():
     else:
         listbox.insert(END, '服务器已停止！') 
         
-def showInfo():
+def show_info():
     '''显示帮助'''
     listbox.insert(END, '制作小组成员：欧必杰、吴志伟')   
     listbox.insert(END, '鸣谢：115、117') 
@@ -97,7 +97,7 @@ def clear():
     listbox.delete(0, END)
     
 def quit():
-    stopServer()
+    stop_server()
     root.quit()
 
 root = Tk()   
@@ -110,7 +110,7 @@ label1 = Label(deyF, text="端口:").pack(side=LEFT, expand=YES, fill=BOTH)
 display = StringVar()
 port_input = Entry(deyF, textvariable=display)
 port_input.pack(side=LEFT, expand=YES, fill=BOTH)
-port_change = Button(deyF, text="Change", command=changePort)
+port_change = Button(deyF, text="Change", command=change_port)
 port_change.pack(side=LEFT, expand=YES, fill=BOTH)
 
 #资源路径输入框及按钮
@@ -118,18 +118,18 @@ opsF = frame(root, TOP)
 label2 = Label(opsF, text="路径:") .pack(side=LEFT, expand=YES, fill=BOTH)
 path_input = Entry(opsF)
 path_input.pack(side=LEFT, expand=YES, fill=BOTH)
-path_change = Button(opsF, text="Change", command=changePath)
+path_change = Button(opsF, text="Change", command=change_path)
 path_change.pack(side=LEFT, expand=YES, fill=BOTH) 
 
 #功能按钮 
 wzwF = frame(root, TOP)
-start_btn = Button(wzwF, text="启动", command=startServer)
+start_btn = Button(wzwF, text="启动", command=start_server)
 start_btn.pack(side=LEFT, expand=YES, fill=BOTH)
-stop_btn = Button(wzwF, text="停止", command=stopServer)
+stop_btn = Button(wzwF, text="停止", command=stop_server)
 stop_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 clear_btn = Button(wzwF, text="清除", command=clear)
 clear_btn.pack(side=LEFT, expand=YES, fill=BOTH)
-about_btn = Button(wzwF, text="关于", command=showInfo)
+about_btn = Button(wzwF, text="关于", command=show_info)
 about_btn.pack(side=LEFT, expand=YES, fill=BOTH)
 quit_btn = Button(wzwF, text="退出", command=quit)
 quit_btn.pack(side=LEFT, expand=YES, fill=BOTH)
@@ -143,6 +143,6 @@ listbox.pack(side=LEFT, fill=BOTH, expand=1)
 scrollbar.pack(side=RIGHT, fill=Y)
 
 #启动服务器
-startServer()
+start_server()
             
 root.mainloop()

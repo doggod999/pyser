@@ -37,18 +37,18 @@ class Log():
         print msg
         
     def info(self, msg):
-        msg = self.get_time() + ' [INFO] ' + msg
+        msg = self.getTime() + ' [INFO] ' + msg
         self.write(msg)
         
     def error(self, msg):
-        msg = self.get_time() + ' [ERROR] ' + msg
+        msg = self.getTime() + ' [ERROR] ' + msg
         self.write(msg)
         
     def warning(self, msg):
-        msg = self.get_time() + ' [WARNING] ' + msg
+        msg = self.getTime() + ' [WARNING] ' + msg
         self.write(msg)
         
-    def get_time(self):
+    def getTime(self):
         return datetime.datetime.now().strftime('[%Y-%m-%d %H:%M:%S]')
         
 if __name__ == '__main__':

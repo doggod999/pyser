@@ -6,9 +6,9 @@ import os
 class HttpRequest():
     def __init__(self, request):
         self.request_dict = {'request': request}
-        self.parse_request()
+        self.parseRequest()
         
-    def parse_request(self):
+    def parseRequest(self):
         '''分析http请求'''
         
         request = self.request_dict['request']
@@ -16,20 +16,20 @@ class HttpRequest():
         request = request.replace('\r', '')
         request_list = request.split('\n')
         self.request_dict['request_line'] = request_list[0]
-        self.parse_request_line()
+        self.parseRequestLine()
         
         if self.request_dict['method'] == 'POST':
             self.request_dict['entity_body'] = request_list[-1]
-            self.parse_entity_body()
+            self.parseEntityBody()
         if self.request_dict['method'] == 'GET':
             temp_list = self.request_dict['url'].split('?')
             if len(temp_list) == 2:
                 self.request_dict['url'] = temp_list[0]
                 self.request_dict['entity_body'] = temp_list[1]
-                self.parse_entity_body()
-        self.request_dict['url'] = self.add_slash(self.request_dict['url'])
+                self.parseEntityBody()
+        self.request_dict['url'] = self.addSlash(self.request_dict['url'])
         
-    def parse_request_line(self):
+    def parseRequestLine(self):
         '''分析http请求行'''
         
         request_line = self.request_dict['request_line']
@@ -38,13 +38,13 @@ class HttpRequest():
         self.request_dict['url'] = line_list[1]
         self.request_dict['version'] = line_list[2]
         
-    def parse_entity_body(self):
+    def parseEntityBody(self):
         '''分析POST方法的请求实体'''
         
         pass
 #        entity_body = self.request_dict['entity_body']
 
-    def add_slash(self, url):
+    def addSlash(self, url):
         '''解析要请求的url，末尾自动补全斜杠'''
         
         if not url.endswith('/'):

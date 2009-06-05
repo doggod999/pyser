@@ -83,14 +83,14 @@ class BaseServer():
         elif http_request.request_dict['method'] == 'HEAD':
             self.doHEAD(http_request, http_response, log_msg)
         else:
-            http_response.send_error(400)
+            http_response.sendError(400)
             log_msg += ' 400\r\n'
             self.logInfo(log_msg)
         connect.close()
         
     def doGET(self, http_request, http_response, log_msg):
         '''响应get方法'''
-        flag = http_response.do_get_response(http_request.request_dict['url'], config.apppath)
+        flag = http_response.doGetResponse(http_request.request_dict['url'], config.apppath)
         if flag == False :
             log_msg += ' 404\r\n'
             self.logInfo(log_msg)
@@ -100,7 +100,7 @@ class BaseServer():
     
     def doPOST(self, http_request, http_response, log_msg):
         '''响应post方法'''
-        flag = http_response.do_post_response(http_request.request_dict['url'], config.apppath)
+        flag = http_response.doPostResponse(http_request.request_dict['url'], config.apppath)
         if flag == False :
             log_msg += ' 404\r\n'
             self.logInfo(log_msg)
@@ -110,7 +110,7 @@ class BaseServer():
             
     def doHEAD(self, http_request, http_response, log_msg):
         '''响应head方法'''
-        flag = http_response.do_head_response(http_request.request_dict['url'], config.apppath)
+        flag = http_response.doHeadResponse(http_request.request_dict['url'], config.apppath)
         if flag == False :
             log_msg += ' 404\r\n'
             self.logInfo(log_msg)
