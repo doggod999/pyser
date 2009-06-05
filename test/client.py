@@ -8,7 +8,7 @@ Accept-Language: zh-cn,zh;q=0.5
 Accept-Encoding: gzip,deflate
 Accept-Charset: gb2312,utf-8;q=0.7,*;q=0.7
 Keep-Alive: 300
-Connection: keep-alive'''
+Connection: close'''
 
 if __name__ == '__main__': 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
