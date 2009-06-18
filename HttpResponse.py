@@ -90,24 +90,27 @@ class HttpResponse():
              message = self.responses[code][0]
         else:
             message = ''
-            
-        self.writeResponseLine(code, message)
-#        print self.date_time_string()
-#        print self.server_version
-        self.writeHeader('Content-Type', self.getType(path))
-        self.writeHeader('Date', self.dateTimeString())
-        self.writeHeader('Server', self.server_version)
-        self.writeHeader('Connection', 'close')
-        if body:
-            self.writeBody(body)
-        self.finish()
+        try:    
+            self.writeResponseLine(code, message)
+    #        print self.date_time_string()
+    #        print self.server_version
+            self.writeHeader('Content-Type', self.getType(path))
+            self.writeHeader('Date', self.dateTimeString())
+            self.writeHeader('Server', self.server_version)
+            self.writeHeader('Connection', 'close')
+            if body:
+                self.writeBody(body)
+            self.finish()
+        except:
+            print 'error: (10054, "Connection reset by peer")'
     
     def writeResponseLine(self, code, message):
         self.wfile.write("%s %d %s\r\n" % (self.version, code, message))
+       
         
     def writeHeader(self, keyword, value):
         self.wfile.write("%s: %s\r\n" % (keyword, value))
-        
+            
     def writeBody(self, body):
         self.wfile.write("\r\n%s" % body)
     
