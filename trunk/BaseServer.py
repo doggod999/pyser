@@ -20,9 +20,7 @@ class BaseServer():
     
     def stopServer(self):
         '''停止服务器'''
-        msg = '''HEAD / HTTP/1.1
-        Host: localhost:8888
-        Connection: close'''
+        msg = '''HEAD / HTTP/1.1'''
         if not self.is_running:
             return
         self.is_running = False
@@ -35,7 +33,7 @@ class BaseServer():
         for i in range(10):
             sock.recv(1024)
         sock.close()
-        self.logInfo('Server stop successfully!')
+        self.logInfo('Server stop successfully!\r\n')
         
     def runServer(self):
         '''启动服务器'''

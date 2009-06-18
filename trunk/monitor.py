@@ -11,7 +11,6 @@ from Tkinter import *
 
 from BaseServer import BaseServer
 
-is_running = False
 server = BaseServer()
 server_thread = threading.Thread()
 
@@ -72,25 +71,25 @@ def start_server():
         server_thread = threading.Thread(target=server.runServer)
         server_thread.setDaemon(1)
         server_thread.start()
-        listbox.insert(END, '服务器成功启动！') 
-        is_running = True 
+        listbox.insert(END, 'HTTP服务成功启动！') 
     else:
-        listbox.insert(END, '服务器已启动！') 
+        listbox.insert(END, 'HTTP服务已启动！') 
 
 def stop_server():
     '''停止服务器'''
     global server_thread 
     if server_thread.isAlive():
         server.stopServer()
-        listbox.insert(END, '服务器成功停止！') 
+        listbox.insert(END, 'HTTP服务成功停止！') 
     else:
-        listbox.insert(END, '服务器已停止！') 
+        listbox.insert(END, 'HTTP服务已停止！') 
         
 def show_info():
     '''显示帮助'''
-    listbox.insert(END, '制作小组成员：欧必杰、吴志伟')   
-    listbox.insert(END, '鸣谢：115、117') 
-    listbox.insert(END, '版本号：1.0 Beta')  
+    listbox.insert(END, '服务器版本：1.0')
+    listbox.insert(END, '学生：ooaixt、wzw')   
+    listbox.insert(END, '联系方式：doggod999@gmail.com、wzw6174@gmail.com') 
+      
     
 def clear():
     '''清除文本显示'''
